@@ -1,0 +1,236 @@
+<html lang="en" ng-app="bfApp">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="assets/favicon.png">
+	<script src="js/loadfail.js" onerror="alert(`Error loading critical package 'js/loadfail.js'`)"></script>
+	<link rel="stylesheet" href="css/sdf.css" onerror="document.addEventListener('DOMContentLoaded', () => { presentLoadFail('sdf.css', 'css/sdf.css', 'Stylesheet'); });">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" onerror="document.addEventListener('DOMContentLoaded', () => { presentLoadFail('animate.min.css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css', 'Stylesheet'); });"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Orbitron" onerror="document.addEventListener('DOMContentLoaded', () => { presentLoadFail('Orbitron', 'https://fonts.googleapis.com/css?family=Orbitron', 'Font'); });">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js" onerror="document.addEventListener('DOMContentLoaded', () => { presentLoadFail('angular.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js'); });"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" onerror="document.addEventListener('DOMContentLoaded', () => { presentLoadFail('materialize.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'); });"></script>
+	<script src="js/bf.js" onerror="document.addEventListener('DOMContentLoaded', () => { presentLoadFail('bf.js', 'js/bf.js', 'Core package'); });"></script>
+	<title>NSTF</title>
+	<style>
+        ::-webkit-scrollbar {
+			display: none;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+		  display: none;
+        }
+        html, body {
+            height: 100%;
+        }
+		body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+			overflow: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+		body::-webkit-scrollbar {
+            display: none;
+            width: 0px;
+            background: transparent;
+        }
+		*{
+			box-sizing: border-box;
+		}
+		.obt {
+			font-family: Orbitron;
+			font-size: 50px;
+		}
+		#container{
+			max-width: 940px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.sdf-1.cur{
+			background-color: #dd514c;
+		}
+		.wide{
+			min-width: 120px;
+		}
+		.instructions td{
+			font-size: 16px;
+		}
+		.align{
+			text-align: center;
+			align-items: center;
+			align-content: center;
+			justify-content: center;
+			display: flex;
+		}
+		#saveButton{
+			top: 10px;
+			right: 10px;
+			position: absolute;
+			height: 40px;
+			width: 70px;
+		}
+		#projectName{
+			top: 10px;
+			left: 10px;
+			position: absolute;
+			width: 200px;
+			height: 40px;
+            text-align: center;
+		}
+		#projectName::placeholder {
+            text-align: center;
+        }
+        
+		#uploadButton{
+			top: 10px;
+			right: 90px;
+			position: absolute;
+			width: 200px;
+			height: 40px;
+		}
+		#fileInput{
+			top: 10px;
+			right: 90px;
+			position: absolute;
+			width: 200px;
+			height: 40px;
+		}
+		.line-align-div{
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+		}
+	</style>
+</head>
+<body ng-controller="bfController">
+	<div class="sdf-wrapper sdf-default sdf-v-padding-big" id="container">
+		<div class="sdf-grid">
+			<header>
+				<input id="projectName" type="text" class="sdf-input" placeholder="Project Name" autocorrect="off" autocapitalize="off">
+	    		<input type="file" id="fileInput" accept=".nstf" required style="display: none;">
+		    	<button id="uploadButton" class="sdf-button sdf-dark">Load</button>		
+        		<button class="sdf-button sdf-dark" id="saveButton">Save</button>
+		    	<br><br><br>
+			</header>
+			<br><br><br><br><br>
+			<div class="sdf-cell sdf-12 align">
+				<h1 class="obt">NSTF Visualizer</h1>
+			</div>
+			<div class="sdf-cell sdf-12 sdf-form">
+				<div class="sdf-form-group">
+					<textarea ng-model="code" class="sdf-input" id="textBox" placeholder="Code" style="resize: vertical; overflow: auto;"></textarea>
+				</div>
+			</div>
+			<div class="sdf-cell sdf-12 sdf-xs-6 sdf-padding">
+				<div class="sdf-btn-group sdf-h-align-left">
+					<button class="sdf-button wide" ng-class="brainfuck.active ? 'sdf-danger' : 'sdf-success'" ng-show="!timer" ng-click="brainfuck.active ?  stop() : start()" >{{ brainfuck.active ? 'Stop' : 'Start' }}</button>
+					<button class="sdf-button wide" ng-class="brainfuck.active ? 'sdf-warning' : 'sdf-success'" ng-show="timer" ng-click="brainfuck.active ? pause() : continue()">{{ brainfuck.active ? 'Pause' : 'Continue' }}</button>
+					<button class="sdf-button sdf-dark" ng-click="next()">&gt;&gt;</button>
+				</div>
+			</div>
+			<div class="sdf-cell sdf-12 sdf-xs-6 sdf-padding" style="display: flex; justify-content: center;">
+				<div class="sdf-btn-group sdf-h-align-right align" style="display: flex; justify-content: center; align-items: center;">
+					<div class="sdf-input-group align line-align-div" style="margin-left: 20px;">
+						<span class="sdf-addon sdf-primary">delay</span>
+						<input type="text" class="sdf-input" style="max-width: 60px" ng-model="speed">
+					</div>
+					<div style="width: 10px;"></div>
+					<button class="sdf-button sdf-danger wide" ng-click="reset()">Reload</button>
+				</div>
+			</div>
+		</div>
+		<div class="sdf-grid sdf-v-margin-big">
+			<div class="sdf-cell sdf-12">
+				<div>
+					<div class="sdf-grid">
+						<div class="sdf-cell sdf-12 sdf-sm-4 sdf-padding sdf-secondary">
+							<h3 class="align animate__animated animate__fadeInDown animate__slow">Input</h3>
+							<div class="sdf-grid">
+								<div class="sdf-cell sdf-1 sdf-no-padding sdf-text-center" ng-repeat="ins in input track by $index" ng-class="brainfuck.ip == $index ? 'cur' : 'not'">
+									{{ ins }}
+								</div>
+							</div>
+						</div>
+						<div class="sdf-cell sdf-12 sdf-sm-4 sdf-padding sdf-primary">
+							<h3 class="align animate__animated animate__fadeInDown animate__slow">Memory</h3>
+							<div class="sdf-grid">
+								<div class="sdf-cell sdf-1 sdf-no-padding sdf-text-center" ng-repeat="ptr in brainfuck.mem track by $index" ng-class="brainfuck.ptr == $index ? 'cur' : 'not'">
+									{{ ptr }}
+								</div>
+							</div>
+						</div>
+						<div class="sdf-cell sdf-12 sdf-sm-4 sdf-padding sdf-dark">
+							<h3 class="align animate__animated animate__fadeInDown animate__slow">Output</h3>
+							<div class="sdf-grid">
+								<div class="sdf-cell sdf-1 sdf-no-padding sdf-text-center" ng-repeat="chr in brainfuck.output track by $index">
+									{{ chr }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/visualizer.js"></script>
+	<script>
+		const uploadButton = document.getElementById("uploadButton");
+		const fileInput = document.getElementById("fileInput");
+	
+		uploadButton.addEventListener("click", function () {
+			fileInput.click();
+		});
+	
+		fileInput.addEventListener("change", function () {
+			const file = fileInput.files[0];
+	
+			if (file) {
+				if (!file.name.endsWith(".nstf")) {
+					alert("Only .nstf files are allowed.");
+					return;
+				}
+				const reader = new FileReader();
+				reader.onload = function (e) {
+					const contents = e.target.result;
+					if (isTextFile(contents)) {
+						const scope = angular.element(document.getElementById("textBox")).scope();
+						scope.$apply(function () {
+							scope.code = contents;
+						});
+					} else {
+						alert("This file appears to be binary and cannot be processed.");
+					}
+				};
+				reader.onerror = function () {
+					alert("Error reading the file.");
+				};
+				reader.readAsText(file);
+			}
+		});
+	
+		function isTextFile(contents) {
+			return /^[\x20-\x7E\n\r\t]*$/.test(contents);
+		}
+	
+		function downloadFile() {
+			const content = document.getElementById('textBox').value;
+			let projectName = document.getElementById('projectName').value;
+			if (!projectName || projectName.trim() === '') {
+				projectName = 'Untitled';
+			}
+			if (!content) {
+				return;
+			}
+			const blob = new Blob([content], { type: 'text/plain' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.download = projectName + '.nstf';
+			link.click();
+		}
+	
+		document.getElementById('saveButton').addEventListener('click', downloadFile);
+	</script>
+	</body>
+</html>
