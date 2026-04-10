@@ -1,48 +1,37 @@
-# NSTF Visualizer
+# NSTF Interpreter & Visualizer
 
-Welcome to the **NSTF Visualizer** – a slick, browser-based Brainf\*\*k visualizer powered by AngularJS, and Materialize.
+Welcome to the **NSTF Interpreter & Visualizer** – a browser-based interpreter and execution visualizer for the **NSTF language**, built with AngularJS and Materialize.
 
 ---
 
-## 🚀 What is NSTF?
+## 🔐 What is NSTF?
 
-> **NSTF** stands for **Nathan Network Secure Transmission Format** – a custom `.nstf` file format designed to represent and transport Brainf\*\*k code securely and stylishly.
+> **NSTF** (N Software Secure Transmission Format) is a language and file format designed for the secure, structured representation and transmission of executable code. Built on the foundation of Brainf\*\*k, NSTF wraps logic in a metadata-rich, human-readable format — making it suitable for environments where provenance, authorship, and encoding transparency matter.
+
+NSTF files carry not just code, but context: who wrote it, when, and how it should be interpreted. This project provides a full **interpreter and visual debugger** for `.nstf` programs.
 
 ---
 
 ## ✨ Features
 
+- ✅ Full NSTF language interpreter
+- ✅ Step-through execution with pause, continue, and reload controls
+- ✅ Real-time memory, input, and output visual panels
+- ✅ `.nstf` file loader and saver
+- ✅ Delay control for execution animation timing
 - ✅ AngularJS-powered dynamic UI
-- ✅ Materialize CSS components for clean design
+- ✅ Materialize CSS for clean, responsive design
 - ✅ Animate.css for smooth transitions
-- ✅ Custom `.nstf` file loader/saver
-- ✅ Memory, input, and output visual panels
-- ✅ Start / Pause / Continue / Step controls
-- ✅ Delay control for animation timing
 - ✅ Custom error handling for failed resources
-- ✅ Favicon support & custom font via Orbitron
-- ✅ `.nstf` file support (text-based format with metadata)
+- ✅ Orbitron font & favicon support
 
 ---
 
-## 📁 File Structure
+## 🧪 The NSTF Language & File Format
 
-```plaintext
-NSTF-Visualizer/
-├── index.html               # The main HTML file
-├── js/
-│   ├── bf.js                # Brainf**k logic and Angular controller
-│   ├── loadfail.js          # Error fallback screen generator
-│   └── visualizer.js        # Visual updates for the UI
-├── css/
-│   └── sdf.css              # Custom styles (Materialize-based)
-├── assets/
-│   └── favicon.png          # Favicon
-```
+`.nstf` is a structured, plain-text format that bundles executable code with transmission metadata. Every `.nstf` file is self-describing — a receiver always knows the version, author, date, and encoding of what they're running.
 
-## 🧪 NSTF File Format
-
-`.nstf` is a simple text format with metadata headers and code:
+**Example `.nstf` file:**
 
 ```text
 # NSTF v1.0
@@ -54,37 +43,57 @@ NSTF-Visualizer/
 +++++ [> +++++ <-] > + .  // etc...
 ```
 
+The metadata header is mandatory and ensures authenticity and traceability of transmitted programs. Only valid `.nstf` files are accepted by the interpreter — binary blobs and raw code snippets are rejected by design.
+
+---
+
+## 📁 Project Structure
+
+```plaintext
+NSTF-Visualizer/
+├── index.html               # Main application entry point
+├── js/
+│   ├── bf.js                # NSTF interpreter core & Angular controller
+│   ├── loadfail.js          # Error fallback screen generator
+│   └── visualizer.js        # Execution state visualizer
+├── css/
+│   └── sdf.css              # Custom styles (Materialize-based)
+├── assets/
+│   └── favicon.png          # Favicon
+```
+
 ---
 
 ## 🛠 How to Use
 
 1. Open `index.html` in your browser.
-2. Type or paste your Brainf\*\*k code.
-3. Hit `Start`, `Pause`, `>>`, or `Reload` as needed.
-4. Save your code to `.nstf` format.
-5. Load `.nstf` files using the `Load` button.
+2. Write NSTF code directly, or load an existing `.nstf` file via the `Load` button.
+3. Use `Start`, `Pause`, `Step (>>)`, or `Reload` to control execution.
+4. Watch memory, input, and output update in real time.
+5. Save your program back to `.nstf` format using the `Save` button.
 
-> Only `.nstf` files are accepted to prevent binary or invalid inputs.
+> Only valid `.nstf` files are accepted. This enforces the NSTF transmission contract and prevents raw or malformed inputs from being executed.
 
 ---
 
 ## 🔧 Requirements
 
-No setup needed. Just open `index.html` in any modern browser (Chrome, Firefox, Edge, Opera).
+No installation required. Open `index.html` in any modern browser (Chrome, Firefox, Edge, Opera).
 
-> ⚠️ Make sure you're connected to the internet for external CDN assets (like Angular, Materialize, etc.)
+> ⚠️ An internet connection is required for CDN-hosted assets (AngularJS, Materialize, etc.)
 
 ---
 
 ## 🌐 Credits & Tech
 
-*  Built with [![AngularJS](http://img.shields.io/badge/AngularJS-blue)](https://angularjs.org/)
-*  Styled with [![Materialize CSS](http://img.shields.io/badge/Materialize-red)](https://materializecss.com/)
-*  Animations via [![Animate.css](http://img.shields.io/badge/Animate.css-6f42c1)](https://animate.style/)
-*  Fonts via [![Google Fonts - Orbitron](http://img.shields.io/badge/Orbitron-grey)](https://fonts.google.com/specimen/Orbitron)
-*  Concept, code, and creativity by [![Natuworkguy](http://img.shields.io/badge/Natuworkguy-green)](https://github.com/Natuworkguy/)
+* Built with [![AngularJS](http://img.shields.io/badge/AngularJS-blue)](https://angularjs.org/)
+* Styled with [![Materialize CSS](http://img.shields.io/badge/Materialize-red)](https://materializecss.com/)
+* Animations via [![Animate.css](http://img.shields.io/badge/Animate.css-6f42c1)](https://animate.style/)
+* Fonts via [![Google Fonts - Orbitron](http://img.shields.io/badge/Orbitron-grey)](https://fonts.google.com/specimen/Orbitron)
+* NSTF language design, interpreter, and tooling by [![Natuworkguy](http://img.shields.io/badge/Natuworkguy-green)](https://github.com/Natuworkguy/)
 
 ---
 
 ## 📜 License
-This software is under the Apache license.
+
+This software is licensed under the Apache License.
